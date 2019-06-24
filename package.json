@@ -1,6 +1,6 @@
 {
-  "name": "parse-gedcom",
-  "version": "1.0.5",
+  "name": "gedcom-d3",
+  "version": "1.0.0",
   "description": "a simple and readable gedcom parser",
   "main": "index.js",
   "bin": {
@@ -16,7 +16,7 @@
     "format",
     "geneaology"
   ],
-  "author": "Tom MacWright",
+  "author": "Michael Plunkett",
   "license": "ISC",
   "dependencies": {
     "concat-stream": "^2.0.0",
@@ -29,6 +29,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:tmcw/parse-gedcom.git"
+    "url": "git@github.com:mister.blanket/parse-gedcom.git"
   }
 }
