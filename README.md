@@ -1,3 +1,5 @@
+Based on [tmcw/parse-gedcom](https://github.com/tmcw/parse-gedcom), this project seeks to improve d3ize functionality to make Gedom data in more fully-functional d3 capable JSON. 
+
 **Core development is happening in the [v2 branch](https://github.com/tmcw/parse-gedcom/tree/v2), which is a full rewrite.**
 
 # parse-gedcom
