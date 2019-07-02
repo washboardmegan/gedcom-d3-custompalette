@@ -294,5 +294,3 @@ function familyLinks(family) {
     });
     return memberLinks;
 }*/
-
-module.exports = d3ize;

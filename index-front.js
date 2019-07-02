@@ -1,5 +1,3 @@
-var crawl = require('tree-crawl');
-
 // from https://github.com/madprime/python-gedcom/blob/master/gedcom/__init__.py
 // * Level must start with nonnegative int, no leading zeros.
 // * Pointer optional, if it exists it must be flanked by '@'
@@ -76,6 +74,3 @@ function parse(input) {
         return node.tree;
     }
 }
-
-module.exports.parse = parse;
-module.exports.d3ize = require('./d3ize');
