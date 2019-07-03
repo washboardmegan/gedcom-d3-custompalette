@@ -295,4 +295,4 @@ function familyLinks(family) {
     return memberLinks;
 }*/
 
-module.exports = d3ize;
+//module.exports = d3ize;

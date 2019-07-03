@@ -2,7 +2,7 @@ Based on [tmcw/parse-gedcom](https://github.com/tmcw/parse-gedcom), this project
 
 ## Usage
 
-npm install --save parse-gedcom
+npm install --save gedcom-d3
 
 ## API
 
