@@ -5,24 +5,34 @@ function hasTag(val) {
   };
 }
 
-// Tag search function
+// Data search function
 function hasData(val) {
   return function(node) {
     return node.data === val;
   };
 }
 
+// ID search function
+function hasID(val) {
+  return function(node) {
+    return node.id === val;
+  };
+}
+
 function d3ize(tree) {
-  var peopleNodes = tree
+  let peopleNodes = tree
     .filter(hasTag('INDI'))
     .map(toNode);
-  var families = tree.filter(hasTag('FAM'));
-  //var familyNodes = families.map(toNode);
-  var links = families.reduce(function(memo, family) {
-    return memo.concat(familyLinks(family));
+  let notes = tree.filter(hasTag('NOTE'));
+  // Add bio
+  getBio(peopleNodes, notes);
+  let families = tree.filter(hasTag('FAM'));
+  //let familyNodes = families.map(toNode);
+  let links = families.reduce(function(memo, family) {
+    return memo.concat(familyLinks(family, peopleNodes));
   }, []);
-  var allNodes = peopleNodes;//.concat(familyNodes);
-  var indexedNodes = allNodes.reduce(function(memo, node, i) {
+  let allNodes = peopleNodes;//.concat(familyNodes);
+  let indexedNodes = allNodes.reduce(function(memo, node, i) {
     memo[node.id] = i;
     return memo;
   }, {});
@@ -34,89 +44,84 @@ function d3ize(tree) {
   };
 }
 
+// Get title
+function getTitle(p) {
+
+  let title = (p.tree.filter(hasTag('TITL')) || []);
+  if (title.length > 0) {
+    //console.log(title[title.length -1]);
+    return title[title.length -1].data;
+  }
+}
+
 // Get full name
 function getName(p) {
-  if (p.tag === 'INDI') {
-    var nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
-    if (nameNode) {
-      return nameNode.data.replace(/\//g, '');
-    } else {
-      return '?';
-    }
+
+  let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
+  if (nameNode) {
+    return nameNode.data.replace(/\//g, '');
   } else {
-    return 'Family';
+    return '?';
   }
 }
 
 // Get first name
 function getFirstName(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'NAME' tag
-    var nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
-    if (nameNode) {
+  // Find 'NAME' tag
+  let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
+  if (nameNode) {
 
-      // Find 'GIVN' tag
-      var firstNameNode = (nameNode.tree.filter(hasTag('GIVN')) || [])[0];
-      if (firstNameNode) {
+    // Find 'GIVN' tag
+    let firstNameNode = (nameNode.tree.filter(hasTag('GIVN')) || [])[0];
+    if (firstNameNode) {
 
-        // Remove middle name
-        if (firstNameNode.data.search(' ') !== -1) {
-          return firstNameNode.data.slice(0, firstNameNode.data.search(' '));
-        } else {
-          return firstNameNode.data;
-        }
+      // Remove middle name
+      if (firstNameNode.data.search(' ') !== -1) {
+        return firstNameNode.data.slice(0, firstNameNode.data.search(' '));
       } else {
-        return '?';
+        return firstNameNode.data;
       }
     } else {
       return '?';
     }
   } else {
-    return 'Family';
+    return '?';
   }
 }
 
 // Get surname
 function getSurname(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'NAME' tag
-    var nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
-    if (nameNode) {
+  // Find 'NAME' tag
+  let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
+  if (nameNode) {
 
-      // Find 'SURN' tag
-      var surnameNode = (nameNode.tree.filter(hasTag('SURN')) || [])[0];
-      if (surnameNode) {
+    // Find 'SURN' tag
+    let surnameNode = (nameNode.tree.filter(hasTag('SURN')) || [])[0];
+    if (surnameNode) {
 
-        // Remove alternate surnames
-        if (surnameNode.data.search(',') !== -1) {
-          return surnameNode.data.slice(0, surnameNode.data.search(','));
-        } else {
-          return surnameNode.data;
-        }
+      // Remove alternate surnames
+      if (surnameNode.data.search(',') !== -1) {
+        return surnameNode.data.slice(0, surnameNode.data.search(','));
       } else {
-        return '?';
+        return surnameNode.data;
       }
     } else {
       return '?';
     }
   } else {
-    return 'Family';
+    return '?';
   }
 }
 
 // Get gender
 function getGender(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'SEX' tag
-    var genderNode = (p.tree.filter(hasTag('SEX')) || [])[0];
-    if (genderNode) {
-      return genderNode.data;
-    } else {
-      return 'Unknown';
-    }
+  // Find 'SEX' tag
+  let genderNode = (p.tree.filter(hasTag('SEX')) || [])[0];
+  if (genderNode) {
+    return genderNode.data;
   } else {
     return 'Unknown';
   }
@@ -124,103 +129,148 @@ function getGender(p) {
 
 // Get date of birth
 function getDOB(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'BIRT' tag
-    var dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
-    if (dobNode) {
+  // Find 'BIRT' tag
+  let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
+  if (dobNode) {
 
-      // Find 'DATE' tag
-      var dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
-      if (dateNode) {
-        return dateNode.data;
-      } else {
-        return '?';
-      }
+    // Find 'DATE' tag
+    let dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
+    if (dateNode) {
+      return dateNode.data;
     } else {
       return '?';
     }
+  } else {
+    return '?';
   }
 }
 
 // Get year of birth
 function getYOB(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'BIRT' tag
-    var dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
-    if (dobNode) {
+  // Find 'BIRT' tag
+  let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
+  if (dobNode) {
 
-      // Find 'DATE' tag
-      var dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
-      if (dateNode) {
-        return dateNode.data.slice(-4);
-      } else {
-        return '?';
-      }
+    // Find 'DATE' tag
+    let dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
+    if (dateNode) {
+      return dateNode.data.slice(-4);
     } else {
       return '?';
     }
+  } else {
+    return '?';
+  }
+}
+
+// Get place of birth
+function getPOB(p) {
+
+  // Find 'BIRT' tag
+  let pobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
+  if (pobNode) {
+
+    // Find 'DATE' tag
+    let placeNode = (pobNode.tree.filter(hasTag('PLAC')) || [])[0];
+    if (placeNode) {
+      return placeNode.data;
+    } else {
+      return '';
+    }
+  } else {
+    return '';
   }
 }
 
 // Get date of death
 function getDOD(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'BIRT' tag
-    var dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
-    if (dodNode) {
+  // Find 'BIRT' tag
+  let dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
+  if (dodNode) {
 
-      // Find 'DATE' tag
-      var dateNode = (dodNode.tree.filter(hasTag('DATE')) || [])[0];
-      if (dateNode) {
-        return dateNode.data;
-      } else {
-        return 'Unknown';
-      }
+    // Find 'DATE' tag
+    let dateNode = (dodNode.tree.filter(hasTag('DATE')) || [])[0];
+    if (dateNode) {
+      return dateNode.data;
     } else {
-      return 'Present';
+      return '?';
     }
+  } else {
+    return 'Present';
   }
 }
 
 // Get year of death
 function getYOD(p) {
-  if (p.tag === 'INDI') {
 
-    // Find 'BIRT' tag
-    var dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
-    if (dodNode) {
+  // Find 'BIRT' tag
+  let dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
+  if (dodNode) {
 
-      // Find 'DATE' tag
-      var dateNode = (dodNode.tree.filter(hasTag('DATE')) || [])[0];
-      if (dateNode) {
-        return dateNode.data.slice(-4);
-      } else {
-        return 'Unknown';
-      }
+    // Find 'DATE' tag
+    let dateNode = (dodNode.tree.filter(hasTag('DATE')) || [])[0];
+    if (dateNode) {
+      return dateNode.data.slice(-4);
     } else {
-      return 'Present';
+      return '?';
     }
+  } else {
+    return 'Present';
   }
+}
+
+// Get place of birth
+function getPOD(p) {
+
+  // Find 'BIRT' tag
+  let podNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
+  if (podNode) {
+
+    // Find 'DATE' tag
+    let placeNode = (podNode.tree.filter(hasTag('PLAC')) || [])[0];
+    if (placeNode) {
+      return placeNode.data;
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+}
+
+// Get notes
+function getNotes(p) {
+  let notes = p.tree.filter(hasTag('NOTE'));
+  return notes;
 }
 
 // Get relatives
 function getFamilies(p) {
   let families = [];
-  if (p.tag === 'INDI') {
-    var familyNode1 = (p.tree.filter(hasTag('FAMC')) || []);
-    if (familyNode1) {
-      for (let i = 0; i < familyNode1.length; i++) {
-        families.push(familyNode1[i].data);
+  let pediInfo;
+  // If child
+  let familyNode1 = (p.tree.filter(hasTag('FAMC')) || []);
+  if (familyNode1) {
+    for (let i = 0; i < familyNode1.length; i++) {
+      if (familyNode1[i].tree.length > 0) {
+        // Get pedigree info
+        if (familyNode1[i].tree[0].tag == 'PEDI') {
+          pediInfo = {frel: familyNode1[i].tree[0].data, mrel: familyNode1[i].tree[0].data}
+        } else if (familyNode1[i].tree[0].tag == '_FREL') {
+          pediInfo = {frel: familyNode1[i].tree[0].data, mrel: familyNode1[i].tree[1].data}
+        }
       }
+
+      families.push({id: familyNode1[i].data, pedi: pediInfo});
     }
-    var familyNode2 = (p.tree.filter(hasTag('FAMS')) || []);
-    if (familyNode2) {
-      for (let i = 0; i < familyNode2.length; i++) {
-        families.push(familyNode2[i].data);
-      }
+  }
+  let familyNode2 = (p.tree.filter(hasTag('FAMS')) || []);
+  if (familyNode2) {
+    for (let i = 0; i < familyNode2.length; i++) {
+      families.push({id:familyNode2[i].data});
     }
   }
   return families;
@@ -228,16 +278,52 @@ function getFamilies(p) {
 
 function toNode(p) {
   p.id = p.pointer;
+  p.title = getTitle(p);
   p.name = getName(p);
   p.firstName = getFirstName(p);
   p.surname = getSurname(p);
   p.gender = getGender(p);
   p.dob = getDOB(p);
   p.yob = getYOB(p);
+  p.pob = getPOB(p);
   p.dod = getDOD(p);
   p.yod = getYOD(p);
+  p.pod = getPOD(p);
+  p.notes = getNotes(p);
   p.families = getFamilies(p);
   return p;
+}
+
+// Get Bio
+function getBio(person, notes) {
+
+  // People
+  for (let i = 0; i < person.length; i++) {
+    if (person[i].notes.length != 0) {
+      let bio = '';
+      // Notes for person
+      for (let j = 0; j < person[i].notes.length; j++) {
+
+        // Go through all notes to compare
+        for (let k = 0; k < notes.length; k++) {
+
+          // Find matching note for person
+          if (person[i].notes[j].data == notes[k].pointer) {
+            bio += notes[k].data;
+
+            // Concat broken up note
+            if (notes[k].tree.length > 0) {
+              for (let l = 0; l < notes[k].tree.length; l++) {
+                bio += notes[k].tree[l].data;
+              }
+            }
+          }
+        }
+
+      }
+      person[i].bio = bio;
+    }
+  }
 }
 
 function idToIndex(indexedNodes) {
@@ -252,29 +338,69 @@ function idToIndex(indexedNodes) {
   };
 }
 
-function familyLinks(family) {
+function familyLinks(family, peopleNodes) {
+  let memberLinks = [];
+  let maritalStatus = null;
+  let pedigree;
 
   // Filter only individual objects from family tree
-  var memberSet = family.tree.filter(function(member) {
+  let memberSet = family.tree.filter(function(member) {
     // avoid connecting MARR, etc: things that are not
     // people.
     return member.data && (member.data[1] === 'I' || member.data[1] === 'P');
   })
 
-  var memberLinks = [];
+  // Filter marital status events
+  family.tree.filter(function(event) {
+    if (event.tag === 'DIV' || event.tag === 'MARR') {
+      if (maritalStatus !== 'DIV') {
+        maritalStatus = event.tag;
+      }
+    }
+  })
 
   // Iterate over each member of set to connect with other members
   while (memberSet.length > 1) {
-    for (var i = 1; i < memberSet.length; i++) {
+    for (let i = 1; i < memberSet.length; i++) {
 
       // Exclude sibling relationships
-      if (memberSet[0].tag != 'CHIL')
-      memberLinks.push({
-        "source": memberSet[0].data,
-        "target": memberSet[i].data,
-        "sourceType": memberSet[0].tag,
-        "targetType": memberSet[i].tag,
-      })
+      if (memberSet[0].tag != 'CHIL') {
+
+        // If marital status listed
+        if (memberSet[0].tag == 'HUSB' && memberSet[i].tag == 'WIFE') {
+          memberLinks.push({
+            "source": memberSet[0].data,
+            "target": memberSet[i].data,
+            "sourceType": memberSet[0].tag,
+            "targetType": memberSet[i].tag,
+            "type": maritalStatus
+          })
+        } else {
+
+          // Filter pedigree info
+          function getPedigree(personID, parentType) {
+            let person = peopleNodes.filter(hasID(personID));
+            let personFamily = person[0].families.filter(hasID(family.pointer));
+            if (parentType == 'HUSB') {
+              if (personFamily[0].pedi) {
+                return personFamily[0].pedi.frel;
+              }
+            } else {
+              if (personFamily[0].pedi) {
+                return personFamily[0].pedi.mrel;
+              }
+            }
+          }
+
+          memberLinks.push({
+            "source": memberSet[0].data,
+            "target": memberSet[i].data,
+            "sourceType": memberSet[0].tag,
+            "targetType": memberSet[i].tag,
+            "type": getPedigree(memberSet[i].data, memberSet[0].tag)
+          })
+        }
+      }
     }
     memberSet.splice(0,1);
   }
@@ -282,7 +408,7 @@ function familyLinks(family) {
 }
 
 /*function familyLinksOld(family) {
-    var memberLinks = family.tree.filter(function(member) {
+    let memberLinks = family.tree.filter(function(member) {
         // avoid connecting MARR, etc: things that are not
         // people.
         return member.data && member.data[0] === '@';

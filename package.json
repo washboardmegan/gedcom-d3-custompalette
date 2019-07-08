@@ -1,22 +1,13 @@
 {
   "name": "gedcom-d3",
   "version": "1.0.0",
-  "description": "a simple and readable gedcom parser",
+  "description": "A GEDCOM parser, which translates GEDCOM (.ged) files into D3 capable JSON. This package is specifically designed to prepare data for use in https://github.com/mister-blanket/kin-cloud",
   "main": "index.js",
-  "bin": {
-    "parse-gedcom": "./bin/parse-gedcom",
-    "parse-gedcom-d3": "./bin/parse-gedcom-d3"
-  },
   "scripts": {
-    "test": "tape test.js",
-    "build": "browserify live/index.js -o live/bundle.js"
-  },
-  "keywords": [
-    "gedcom",
-    "format",
-    "geneaology"
-  ],
-  "author": "Michael Plunkett",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+  "keywords": ["gedcom","json","geneaology","d3","dag","directed acyclic graph","force graph","three js","family tree","3d"],
+  "author": "Michael Plunkett (https://github.com/mister-blanket)",
   "license": "ISC",
   "dependencies": {
     "concat-stream": "^2.0.0",
@@ -29,6 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mister.blanket/parse-gedcom.git"
-  }
+    "url": "https://github.com/mister-blanket/gedcom-d3.git"
+  },
+  "homepage": "https://github.com/mister-blanket/gedcom-d3"
 }

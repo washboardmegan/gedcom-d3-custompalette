@@ -7,4 +7,4 @@ npm install --save gedcom-d3
 ## API
 
 * `.parse(string)` -> JSON
-* `.d3ize(JSON)` -> d3-capable JSON
+* `d3ize(parse(string));` -> d3-capable JSON
