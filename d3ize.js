@@ -187,7 +187,8 @@ function getPOB(p) {
 // Get date of death
 function getDOD(p) {
 
-  // Find 'BIRT' tag
+  // Find 'DEAT' tag
+  let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
   let dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
   if (dodNode) {
 
@@ -198,6 +199,13 @@ function getDOD(p) {
     } else {
       return '?';
     }
+  } else if (dobNode) {
+    let dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
+    if (dateNode) {
+      return dateNode.data.slice(-4) + 100;
+    } else {
+      return '?';
+    }
   } else {
     return 'Present';
   }
@@ -205,20 +213,45 @@ function getDOD(p) {
 
 // Get year of death
 function getYOD(p) {
+  let thisYear = new Date().getFullYear();
 
-  // Find 'BIRT' tag
+  // Find 'DEAT' tag
+  let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
   let dodNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
+
+  // If DEATH tag
   if (dodNode) {
 
     // Find 'DATE' tag
     let dateNode = (dodNode.tree.filter(hasTag('DATE')) || [])[0];
+
+    // If death date listed
     if (dateNode) {
       return dateNode.data.slice(-4);
     } else {
       return '?';
     }
+
+  // BIRT tag, but no DEAT tag
+  } else if (dobNode && !dodNode) {
+    let dateNode = (dobNode.tree.filter(hasTag('DATE')) || [])[0];
+
+    // If DOB listed
+    if (dateNode) {
+
+      // If born > 100 yrs ago, call dead
+      if (dateNode.data.slice(-4) < (thisYear - 100)) {
+        return '?';
+      } else {
+        return 'Present';
+      }
+    } else {
+      return '?';
+    }
+
+  // no DEAT or BIRT tag
   } else {
-    return 'Present';
+    return '?';
   }
 }
 
