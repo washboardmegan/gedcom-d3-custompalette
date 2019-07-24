@@ -445,13 +445,13 @@ function familyLinks(family, peopleNodes) {
 
         // If marital status listed
         if (memberSet[0].tag == 'HUSB' && memberSet[i].tag == 'WIFE') {
-          memberLinks.push({
+          /*memberLinks.push({
             "source": memberSet[0].data,
             "target": memberSet[i].data,
             "sourceType": memberSet[0].tag,
             "targetType": memberSet[i].tag,
             "type": maritalStatus
-          })
+          })*/
         } else {
 
           // Filter pedigree info
