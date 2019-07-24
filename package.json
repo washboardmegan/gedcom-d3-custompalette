@@ -1,6 +1,6 @@
 {
   "name": "gedcom-d3",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A GEDCOM parser, which translates GEDCOM (.ged) files into D3 capable JSON. This package is specifically designed to prepare data for use in https://github.com/mister-blanket/kin-cloud",
   "main": "index.js",
   "scripts": {
