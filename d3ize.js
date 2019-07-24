@@ -52,7 +52,6 @@ function d3ize(tree) {
     '#71cfde', // baby foam
     '#e0e0e0', // light grey
   ];
-
   let surnameList = [];
   let peopleNodes = tree
     .filter(hasTag('INDI'))
@@ -345,11 +344,23 @@ function getFamilies(p) {
 
 // Get color
 function getColor(p, surnameList, colorList) {
+
+  // If color description listed in GEDCOM
+  let dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
+
+  // Build surname list
   if (!surnameList.includes(p.surname)) {
     surnameList.push(p.surname);
   }
-  console.log(colorList.length);
-  return colorList[surnameList.indexOf(p.surname) % colorList.length];
+
+  // If color listed assign that
+  if (dscr) {
+    return dscr.data;
+
+  // else assign color from colorList
+  } else {
+    return colorList[surnameList.indexOf(p.surname) % colorList.length];
+  }
 }
 
 function toNode(p, surnameList, colorList) {
