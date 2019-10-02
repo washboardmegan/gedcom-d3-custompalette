@@ -1,26 +1,26 @@
 // Tag search function
-function hasTag(val) {
+const hasTag = val => {
   return function(node) {
     return node.tag === val;
   };
 }
 
 // Data search function
-function hasData(val) {
+const hasData = val => {
   return function(node) {
     return node.data === val;
   };
 }
 
 // ID search function
-function hasID(val) {
+const hasID = val => {
   return function(node) {
     return node.id === val;
   };
 }
 
-function d3ize(tree) {
-  let colorList = [
+const d3ize = tree => {
+  const colorList = [
     '#00b4ff', // sky blue
     '#fac641', // mexican egg yolk
     '#d34017', // orange red
@@ -53,19 +53,19 @@ function d3ize(tree) {
     '#e0e0e0', // light grey
   ];
   let surnameList = [];
-  let peopleNodes = tree
+  const peopleNodes = tree
     .filter(hasTag('INDI'))
     .map(function(x) { return toNode(x, surnameList, colorList); });
-  let notes = tree.filter(hasTag('NOTE'));
+  const notes = tree.filter(hasTag('NOTE'));
   // Add bio
   getBio(peopleNodes, notes);
-  let families = tree.filter(hasTag('FAM'));
+  const families = tree.filter(hasTag('FAM'));
   //let familyNodes = families.map(toNode);
   let links = families.reduce(function(memo, family) {
     return memo.concat(familyLinks(family, peopleNodes));
   }, []);
-  let allNodes = peopleNodes;//.concat(familyNodes);
-  let indexedNodes = allNodes.reduce(function(memo, node, i) {
+  const allNodes = peopleNodes;//.concat(familyNodes);
+  const indexedNodes = allNodes.reduce(function(memo, node, i) {
     memo[node.id] = i;
     return memo;
   }, {});
@@ -78,17 +78,16 @@ function d3ize(tree) {
 }
 
 // Get title
-function getTitle(p) {
+const getTitle = p => {
 
-  let title = (p.tree.filter(hasTag('TITL')) || []);
+  const title = (p.tree.filter(hasTag('TITL')) || []);
   if (title.length > 0) {
-    //console.log(title[title.length -1]);
     return title[title.length -1].data;
   }
 }
 
 // Get full name
-function getName(p) {
+const getName = p => {
 
   let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
   if (nameNode) {
@@ -99,10 +98,10 @@ function getName(p) {
 }
 
 // Get first name
-function getFirstName(p) {
+const getFirstName = p => {
 
   // Find 'NAME' tag
-  let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
+  const nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
   if (nameNode) {
 
     // Find 'GIVN' tag
@@ -124,14 +123,14 @@ function getFirstName(p) {
 }
 
 // Get surname
-function getSurname(p) {
+const getSurname = p => {
 
   // Find 'NAME' tag
-  let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
+  const nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
   if (nameNode) {
 
     // Find 'SURN' tag
-    let surnameNode = (nameNode.tree.filter(hasTag('SURN')) || [])[0];
+    const surnameNode = (nameNode.tree.filter(hasTag('SURN')) || [])[0];
     if (surnameNode) {
 
       // Remove alternate surnames
@@ -149,7 +148,7 @@ function getSurname(p) {
 }
 
 // Get gender
-function getGender(p) {
+const getGender = p => {
 
   // Find 'SEX' tag
   let genderNode = (p.tree.filter(hasTag('SEX')) || [])[0];
@@ -161,7 +160,7 @@ function getGender(p) {
 }
 
 // Get date of birth
-function getDOB(p) {
+const getDOB = p => {
 
   // Find 'BIRT' tag
   let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
@@ -180,7 +179,7 @@ function getDOB(p) {
 }
 
 // Get year of birth
-function getYOB(p) {
+const getYOB = p => {
 
   // Find 'BIRT' tag
   let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
@@ -199,7 +198,7 @@ function getYOB(p) {
 }
 
 // Get place of birth
-function getPOB(p) {
+const getPOB = p => {
 
   // Find 'BIRT' tag
   let pobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
@@ -218,7 +217,7 @@ function getPOB(p) {
 }
 
 // Get date of death
-function getDOD(p) {
+const getDOD = p => {
 
   // Find 'DEAT' tag
   let dobNode = (p.tree.filter(hasTag('BIRT')) || [])[0];
@@ -245,7 +244,7 @@ function getDOD(p) {
 }
 
 // Get year of death
-function getYOD(p) {
+const getYOD = p => {
   let thisYear = new Date().getFullYear();
 
   // Find 'DEAT' tag
@@ -289,7 +288,7 @@ function getYOD(p) {
 }
 
 // Get place of birth
-function getPOD(p) {
+const getPOD = p => {
 
   // Find 'BIRT' tag
   let podNode = (p.tree.filter(hasTag('DEAT')) || [])[0];
@@ -308,13 +307,13 @@ function getPOD(p) {
 }
 
 // Get notes
-function getNotes(p) {
+const getNotes = p => {
   let notes = p.tree.filter(hasTag('NOTE'));
   return notes;
 }
 
 // Get relatives
-function getFamilies(p) {
+const getFamilies = p => {
   let families = [];
   let pediInfo;
   // If child
@@ -343,7 +342,7 @@ function getFamilies(p) {
 }
 
 // Get color
-function getColor(p, surnameList, colorList) {
+const getColor = (p, surnameList, colorList) => {
 
   // If color description listed in GEDCOM
   let dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
@@ -363,7 +362,7 @@ function getColor(p, surnameList, colorList) {
   }
 }
 
-function toNode(p, surnameList, colorList) {
+const toNode = (p, surnameList, colorList) => {
   p.id = p.pointer;
   p.title = getTitle(p);
   p.name = getName(p);
@@ -379,11 +378,12 @@ function toNode(p, surnameList, colorList) {
   p.notes = getNotes(p);
   p.families = getFamilies(p);
   p.color = getColor(p, surnameList, colorList);
+  //p.fy = p.yob;
   return p;
 }
 
 // Get Bio
-function getBio(person, notes) {
+const getBio = (person, notes) => {
 
   // People
   for (let i = 0; i < person.length; i++) {
@@ -414,7 +414,7 @@ function getBio(person, notes) {
   }
 }
 
-function idToIndex(indexedNodes) {
+const idToIndex = indexedNodes => {
   return function(link) {
     function getIndexed(id) {
       return indexedNodes[id];
@@ -426,7 +426,7 @@ function idToIndex(indexedNodes) {
   };
 }
 
-function familyLinks(family, peopleNodes) {
+const familyLinks = (family, peopleNodes) => {
   let memberLinks = [];
   let maritalStatus = null;
   let pedigree;
@@ -494,19 +494,5 @@ function familyLinks(family, peopleNodes) {
   }
   return memberLinks;
 }
-
-/*function familyLinksOld(family) {
-    let memberLinks = family.tree.filter(function(member) {
-        // avoid connecting MARR, etc: things that are not
-        // people.
-        return member.data && member.data[0] === '@';
-    }).map(function(member) {
-        return {
-            source: family.pointer,
-            target: member.data
-        };
-    });
-    return memberLinks;
-}*/
 
 //module.exports = d3ize;
