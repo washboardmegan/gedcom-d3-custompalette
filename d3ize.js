@@ -1,75 +1,13 @@
-// Tag search function
-const hasTag = val => {
-  return function(node) {
-    return node.tag === val;
-  };
-}
-
-// Data search function
-const hasData = val => {
-  return function(node) {
-    return node.data === val;
-  };
-}
-
-// ID search function
-const hasID = val => {
-  return function(node) {
-    return node.id === val;
-  };
-}
-
 const d3ize = tree => {
-  const colorList = [
-    '#00b4ff', // sky blue
-    '#fac641', // mexican egg yolk
-    '#d34017', // orange red
-    '#8a9b0f', // olive
-    '#a7dbd8', // sea foam
-    '#a37e58', // light brown
-    '#f38630', // burnt orange
-    '#a27dbd', // soft royal purple
-    '#11644d', // forest
-    '#b3347c', // magenta
-    '#359668', // grass & sage
-    '#fab8b4', // soft pink
-    '#6de627', // neon green
-    '#ecd078', // tangerine
-    '#bfcff7', // ligt purple blue
-    '#e08e79', // blush
-    '#c44d58', // rouge
-    '#c4ffeb', // light sea foam
-    '#a6b890', // olive sage
-    '#aaaaaa', // light blue grey
-    '#ffd3b5', // peach
-    '#826942', // chocolate
-    '#d4ee5e', // lime
-    '#ecfc85', // light yellow
-    '#666666', // off white
-    '#ffa1c3', // newborn pink
-    '#6541a3', // royal purple
-    '#75616b', // dry wine
-    '#71cfde', // baby foam
-    '#e0e0e0', // light grey
-  ];
-  let surnameList = [];
+  const notes = tree.filter(hasTag('NOTE'));
   const peopleNodes = tree
     .filter(hasTag('INDI'))
-    .map(function(x) { return toNode(x, surnameList, colorList); });
-  const notes = tree.filter(hasTag('NOTE'));
-  // Add bio
-  getBio(peopleNodes, notes);
+    .map(p => ( toNode(p, notes )));
   const families = tree.filter(hasTag('FAM'));
-  //let familyNodes = families.map(toNode);
-  let links = families.reduce(function(memo, family) {
+  const links = families.reduce((memo, family) => {
     return memo.concat(familyLinks(family, peopleNodes));
   }, []);
-  const allNodes = peopleNodes;//.concat(familyNodes);
-  const indexedNodes = allNodes.reduce(function(memo, node, i) {
-    memo[node.id] = i;
-    return memo;
-  }, {});
-  //links = links.map(idToIndex(indexedNodes));
+  assignFy(peopleNodes, links);
   return {
     nodes: peopleNodes,
     links: links,
@@ -77,9 +15,143 @@ const d3ize = tree => {
   };
 }
 
+// Tag search function
+const hasTag = val => {
+  return node => {
+    return node.tag === val;
+  };
+}
+
+// Data search function
+const hasData = val => {
+  return node => {
+    return node.data === val;
+  };
+}
+
+// ID search function
+const hasID = val => {
+  return node => {
+    return node.id === val;
+  };
+}
+
+const assignFy = (peopleNodes, links) => {
+
+  // YOB known
+  let yesyob = peopleNodes.filter(p => {
+    return p.yob !== '?';
+  })
+
+  yesyob.forEach(p => p.fy = +(p.yob));
+
+  // YOB unknown
+  let noyob = peopleNodes.filter(p => {
+    return p.yob === '?';
+  });
+
+  let count = 10;
+
+  // Cycle through list, adding fy until all complete
+  while (noyob.length > 0 && count > 0) {
+
+    let tempnoyob = noyob.slice();
+
+    tempnoyob.forEach((p, index) => {
+
+      // Build array of family
+      let tpFamily = [];
+
+      links.forEach(link => {
+        if (link.source == p.id) {
+          tpFamily.push({pRole: 'source', pType: link.sourceType, other: link.target, oType: link.targetType});
+        } else if (link.target == p.id) {
+          tpFamily.push({pRole: 'target', pType: link.targetType, other: link.source, oType: link.sourceType});
+        };
+      });
+
+      // Check family for YOB
+      tpFamily.forEach(member => { // USE SOME() INSTEAD OF FOREACH!!!
+        peopleNodes.forEach(person => { // USE SOME() INSTEAD OF FOREACH!!!
+          if (person.id == member.other && person.fy !== undefined) {
+
+            // Person is source
+            if (member.pRole === 'source') {
+
+              // Person is husband
+              if (member.pType === 'HUSB' && member.oType === 'WIFE') {
+                p.fy = +person.fy - 3;
+
+              // Person is father
+              } else if (member.pType === 'HUSB' && member.oType === 'CHIL') {
+                p.fy = +person.fy - 30;
+
+              // Person is mother
+              } else if (member.pType === 'WIFE') {
+                p.fy = +person.fy - 27;
+              }
+
+              // Person is target
+            } else if (member.pRole === 'target') {
+
+              // Person is wife
+              if (member.pType === 'WIFE' && member.oType === 'HUSB') {
+                p.fy = +person.fy + 3;
+
+              // Person is child of father
+              } else if (member.pType === 'CHIL' && member.oType === 'HUSB') {
+                p.fy = +person.fy + 30;
+
+                // Person is child of mother
+              } else if (member.pType === 'CHIL' && member.oType === 'WIFE') {
+                p.fy = +person.fy + 27;
+              }
+            }
+          }
+        });
+      });
+      if (p.fy !== undefined) {
+        noyob.splice(index,index +1);
+      }
+    })
+    count -= 1;
+  }
+
+  const convertFy = (peopleNodes) => {
+    const fyRatio = peopleNodes => {
+      if (peopleNodes.length < 50) {
+        return 3;
+      } else if (peopleNodes.length > 50 && peopleNodes.length < 150) {
+        return 4;
+      } else if (peopleNodes.length > 150 && peopleNodes.length < 250) {
+        return 5;
+      } else if (peopleNodes.length > 250){
+        return 6;
+      }
+    };
+    let allFy = [];
+    peopleNodes.forEach(p => {
+      if (p.fy !== undefined) {
+        p.fy = p.fy * fyRatio(peopleNodes);
+        allFy.push(p.fy);
+      }
+    })
+
+    let total = 0;
+    allFy.forEach(fy => total += fy);
+    let average = total/allFy.length;
+
+    peopleNodes.forEach(p => {
+      if (p.fy !== undefined) {
+        p.fy = -(p.fy - average);
+      }
+    });
+  }
+  convertFy(peopleNodes);
+}
+
 // Get title
 const getTitle = p => {
-
   const title = (p.tree.filter(hasTag('TITL')) || []);
   if (title.length > 0) {
     return title[title.length -1].data;
@@ -88,7 +160,6 @@ const getTitle = p => {
 
 // Get full name
 const getName = p => {
-
   let nameNode = (p.tree.filter(hasTag('NAME')) || [])[0];
   if (nameNode) {
     return nameNode.data.replace(/\//g, '');
@@ -306,12 +377,6 @@ const getPOD = p => {
   }
 }
 
-// Get notes
-const getNotes = p => {
-  let notes = p.tree.filter(hasTag('NOTE'));
-  return notes;
-}
-
 // Get relatives
 const getFamilies = p => {
   let families = [];
@@ -342,7 +407,40 @@ const getFamilies = p => {
 }
 
 // Get color
-const getColor = (p, surnameList, colorList) => {
+let surnameList = [];
+const getColor = (p) => {
+  const colorList = [
+    '#00b4ff', // sky blue
+    '#fac641', // mexican egg yolk
+    '#d34017', // orange red
+    '#8a9b0f', // olive
+    '#a7dbd8', // sea foam
+    '#a37e58', // light brown
+    '#f38630', // burnt orange
+    '#a27dbd', // soft royal purple
+    '#11644d', // forest
+    '#b3347c', // magenta
+    '#359668', // grass & sage
+    '#fab8b4', // soft pink
+    '#6de627', // neon green
+    '#ecd078', // tangerine
+    '#bfcff7', // ligt purple blue
+    '#e08e79', // blush
+    '#c44d58', // rouge
+    '#c4ffeb', // light sea foam
+    '#a6b890', // olive sage
+    '#aaaaaa', // light blue grey
+    '#ffd3b5', // peach
+    '#826942', // chocolate
+    '#d4ee5e', // lime
+    '#ecfc85', // light yellow
+    '#666666', // off white
+    '#ffa1c3', // newborn pink
+    '#6541a3', // royal purple
+    '#75616b', // dry wine
+    '#71cfde', // baby foam
+    '#e0e0e0', // light grey
+  ];
 
   // If color description listed in GEDCOM
   let dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
@@ -362,7 +460,41 @@ const getColor = (p, surnameList, colorList) => {
   }
 }
 
-const toNode = (p, surnameList, colorList) => {
+// Get person notes
+const getNotes = p => {
+  return p.tree.filter(hasTag('NOTE'));
+}
+
+// Get Bio
+const getBio = (p, notes) => {
+
+  if (p.notes.length != 0) {
+    let bio = '';
+
+    // Notes for person
+    p.notes.forEach(personNote => {
+      notes.forEach(note => {
+        if (personNote.data === note.pointer) {
+          bio += note.data;
+
+          // Concat broken up note
+          if (note.tree.length > 0) { note.tree.forEach(fragment => bio += fragment.data) }
+        }
+      });
+    });
+    return bio;
+  }
+}
+
+const getFy = p => {
+  if(p.yob === '?') {
+    return 0;
+  } else {
+    return +(-p.yob * 3 + 6000);
+  }
+}
+
+const toNode = (p, notes) => {
   p.id = p.pointer;
   p.title = getTitle(p);
   p.name = getName(p);
@@ -375,55 +507,11 @@ const toNode = (p, surnameList, colorList) => {
   p.dod = getDOD(p);
   p.yod = getYOD(p);
   p.pod = getPOD(p);
-  p.notes = getNotes(p);
   p.families = getFamilies(p);
-  p.color = getColor(p, surnameList, colorList);
-  //p.fy = p.yob;
+  p.color = getColor(p);
+  p.notes = getNotes(p);
+  p.bio = getBio(p, notes);
   return p;
-}
-
-// Get Bio
-const getBio = (person, notes) => {
-
-  // People
-  for (let i = 0; i < person.length; i++) {
-    if (person[i].notes.length != 0) {
-      let bio = '';
-      // Notes for person
-      for (let j = 0; j < person[i].notes.length; j++) {
-
-        // Go through all notes to compare
-        for (let k = 0; k < notes.length; k++) {
-
-          // Find matching note for person
-          if (person[i].notes[j].data == notes[k].pointer) {
-            bio += notes[k].data;
-
-            // Concat broken up note
-            if (notes[k].tree.length > 0) {
-              for (let l = 0; l < notes[k].tree.length; l++) {
-                bio += notes[k].tree[l].data;
-              }
-            }
-          }
-        }
-
-      }
-      person[i].bio = bio;
-    }
-  }
-}
-
-const idToIndex = indexedNodes => {
-  return function(link) {
-    function getIndexed(id) {
-      return indexedNodes[id];
-    }
-    return {
-      source: getIndexed(link.source),
-      target: getIndexed(link.target)
-    };
-  };
 }
 
 const familyLinks = (family, peopleNodes) => {
@@ -433,13 +521,11 @@ const familyLinks = (family, peopleNodes) => {
 
   // Filter only individual objects from family tree
   let memberSet = family.tree.filter(function(member) {
-    // avoid connecting MARR, etc: things that are not
-    // people.
     return member.data && (member.data[1] === 'I' || member.data[1] === 'P');
   })
 
   // Filter marital status events
-  family.tree.filter(function(event) {
+  family.tree.filter(event => {
     if (event.tag === 'DIV' || event.tag === 'MARR') {
       if (maritalStatus !== 'DIV') {
         maritalStatus = event.tag;
@@ -495,4 +581,4 @@ const familyLinks = (family, peopleNodes) => {
   return memberLinks;
 }
 
-//module.exports = d3ize;
+module.exports = d3ize;
