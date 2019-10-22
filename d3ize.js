@@ -410,9 +410,9 @@ const getFamilies = p => {
 let surnameList = [];
 const getColor = (p) => {
   const colorList = [
+    '#ff7f50', // coral
     '#00b4ff', // sky blue
     '#fac641', // mexican egg yolk
-    '#d34017', // orange red
     '#8a9b0f', // olive
     '#a7dbd8', // sea foam
     '#a37e58', // light brown
