@@ -1,8 +1,9 @@
 const d3ize = tree => {
   const notes = tree.filter(hasTag('NOTE'));
+  let surnameList = []
   const peopleNodes = tree
     .filter(hasTag('INDI'))
-    .map(p => ( toNode(p, notes )));
+    .map(p => ( toNode(p, notes, surnameList )));
   const families = tree.filter(hasTag('FAM'));
   const links = families.reduce((memo, family) => {
     return memo.concat(familyLinks(family, peopleNodes));
@@ -11,7 +12,8 @@ const d3ize = tree => {
   return {
     nodes: peopleNodes,
     links: links,
-    families: families
+    families: families,
+    surnameList: surnameList
   };
 }
 
@@ -202,6 +204,8 @@ const getSurname = p => {
 
     // Find 'SURN' tag
     const surnameNode = (nameNode.tree.filter(hasTag('SURN')) || [])[0];
+
+    // If surname listed
     if (surnameNode) {
 
       // Remove alternate surnames
@@ -210,8 +214,12 @@ const getSurname = p => {
       } else {
         return surnameNode.data;
       }
+
+    // Derive surname from name
     } else {
-      return '?';
+      nameArr = nameNode.data.split(' ');
+      nameArr[nameArr.length -1] = nameArr[nameArr.length -1].replace(/\//g, '')
+      return nameArr.length > 1 ? nameArr[nameArr.length -1] : "Hrm"
     }
   } else {
     return '?';
@@ -407,8 +415,7 @@ const getFamilies = p => {
 }
 
 // Get color
-let surnameList = [];
-const getColor = (p) => {
+const getColor = (p, surnameList) => {
   const colorList = [
     '#ff7f50', // coral
     '#00b4ff', // sky blue
@@ -416,7 +423,7 @@ const getColor = (p) => {
     '#8a9b0f', // olive
     '#a7dbd8', // sea foam
     '#a37e58', // light brown
-    '#f38630', // burnt orange
+    '#ec4913', // burnt orange
     '#a27dbd', // soft royal purple
     '#11644d', // forest
     '#b3347c', // magenta
@@ -443,12 +450,22 @@ const getColor = (p) => {
   ];
 
   // If color description listed in GEDCOM
-  let dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
+  const dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
 
-  // Build surname list
-  if (!surnameList.includes(p.surname)) {
-    surnameList.push(p.surname);
+  const foundName = surnameList.find(sName => sName.surname === p.surname);
+
+  // If surname already in list
+  if (foundName) {
+    foundName.count = foundName.count +1;
+  } else {
+    surnameList.push({
+      surname: p.surname,
+      count: 1,
+      color: colorList[surnameList.length % colorList.length]
+    })
   }
+
+  // surnameList.color = surnameList.length % colorList.length});
 
   // If color listed assign that
   if (dscr) {
@@ -456,7 +473,7 @@ const getColor = (p) => {
 
   // else assign color from colorList
   } else {
-    return colorList[surnameList.indexOf(p.surname) % colorList.length];
+    return surnameList.find(sName => sName.surname === p.surname).color;
   }
 }
 
@@ -494,7 +511,7 @@ const getFy = p => {
   }
 }
 
-const toNode = (p, notes) => {
+const toNode = (p, notes, surnameList) => {
   p.id = p.pointer;
   p.title = getTitle(p);
   p.name = getName(p);
@@ -508,7 +525,7 @@ const toNode = (p, notes) => {
   p.yod = getYOD(p);
   p.pod = getPOD(p);
   p.families = getFamilies(p);
-  p.color = getColor(p);
+  p.color = getColor(p, surnameList);
   p.notes = getNotes(p);
   p.bio = getBio(p, notes);
   return p;
