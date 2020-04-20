@@ -532,6 +532,7 @@ const toNode = (p, notes, surnameList) => {
 }
 
 const familyLinks = (family, peopleNodes) => {
+
   let memberLinks = [];
   let maritalStatus = null;
   let pedigree;
@@ -569,16 +570,22 @@ const familyLinks = (family, peopleNodes) => {
         } else {
 
           // Filter pedigree info
-          function getPedigree(personID, parentType) {
+          function getPedigree(personID, parentType, relInfo) {
+            // GRAMPS
             let person = peopleNodes.filter(hasID(personID));
             let personFamily = person[0].families.filter(hasID(family.pointer));
             if (parentType == 'HUSB') {
               if (personFamily[0].pedi) {
                 return personFamily[0].pedi.frel;
+              } else if (relInfo.some(parent => parent.tag === "_FREL")) {
+                console.log(relInfo.find(parent => parent.tag === "_FREL").data)
+                return relInfo.find(parent => parent.tag === "_FREL").data;
               }
             } else {
               if (personFamily[0].pedi) {
                 return personFamily[0].pedi.mrel;
+              } else if (relInfo.some(parent => parent.tag === "_MREL")) {
+                return relInfo.find(parent => parent.tag === "_MREL").data;
               }
             }
           }
@@ -588,7 +595,7 @@ const familyLinks = (family, peopleNodes) => {
             "target": memberSet[i].data,
             "sourceType": memberSet[0].tag,
             "targetType": memberSet[i].tag,
-            "type": getPedigree(memberSet[i].data, memberSet[0].tag)
+            "type": getPedigree(memberSet[i].data, memberSet[0].tag, memberSet[i].tree)
           })
         }
       }
