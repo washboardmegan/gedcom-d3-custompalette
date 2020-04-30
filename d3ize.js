@@ -578,7 +578,6 @@ const familyLinks = (family, peopleNodes) => {
               if (personFamily[0].pedi) {
                 return personFamily[0].pedi.frel;
               } else if (relInfo.some(parent => parent.tag === "_FREL")) {
-                console.log(relInfo.find(parent => parent.tag === "_FREL").data)
                 return relInfo.find(parent => parent.tag === "_FREL").data;
               }
             } else {
