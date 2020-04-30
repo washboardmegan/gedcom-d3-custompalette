@@ -42,7 +42,7 @@ const assignFy = (peopleNodes, links) => {
 
   // YOB known
   let yesyob = peopleNodes.filter(p => {
-    return p.yob !== '?';
+    return p.yob !== '?' && !isNaN(+p.yob);
   })
 
   yesyob.forEach(p => p.fy = +(p.yob));
