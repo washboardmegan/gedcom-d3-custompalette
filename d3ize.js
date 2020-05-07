@@ -490,15 +490,25 @@ const getBio = (p, notes) => {
 
     // Notes for person
     p.notes.forEach(personNote => {
-      notes.forEach(note => {
-        if (personNote.data === note.pointer) {
-          bio += note.data;
 
-          // Concat broken up note
-          if (note.tree.length > 0) { note.tree.forEach(fragment => bio += fragment.data) }
-        }
-      });
+      // personNote.data points to NOTE object
+      if (notes.length > 0) {
+        notes.forEach(note => {
+          if (personNote.data === note.pointer) {
+            bio += note.data;
+
+            // Concat broken up note
+            if (note.tree.length > 0) { note.tree.forEach(fragment => bio += fragment.data) }
+
+          }
+        });
+
+      // personNote.data is actual note
+      } else {
+        bio += personNote.data;
+      }
     });
+    console.log(bio);
     return bio;
   }
 }
