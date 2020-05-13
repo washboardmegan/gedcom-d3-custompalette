@@ -121,11 +121,11 @@ const assignFy = (peopleNodes, links) => {
 
   const convertFy = (peopleNodes) => {
     const fyRatio = peopleNodes => {
-      if (peopleNodes.length < 50) {
+      if (peopleNodes.length <= 50) {
         return 3;
-      } else if (peopleNodes.length > 50 && peopleNodes.length < 150) {
+      } else if (peopleNodes.length > 50 && peopleNodes.length <= 150) {
         return 4;
-      } else if (peopleNodes.length > 150 && peopleNodes.length < 250) {
+      } else if (peopleNodes.length > 150 && peopleNodes.length <= 250) {
         return 5;
       } else if (peopleNodes.length > 250){
         return 6;
@@ -218,8 +218,17 @@ const getSurname = p => {
     // Derive surname from name
     } else {
       nameArr = nameNode.data.split(' ');
-      nameArr[nameArr.length -1] = nameArr[nameArr.length -1].replace(/\//g, '')
-      return nameArr.length > 1 ? nameArr[nameArr.length -1] : "Hrm"
+
+      // Look for forward slashes
+      let isSlashes = nameArr.some(str => str[0] === "/");
+      if (isSlashes) {
+        return nameArr.find(str => str[0] === "/").replace(/\//g, '');
+
+      // no slashes, use final item in array
+      } else {
+        nameArr[nameArr.length -1] = nameArr[nameArr.length -1].replace(/\//g, '')
+        return nameArr.length > 1 ? nameArr[nameArr.length -1] : "Hrm"
+      }
     }
   } else {
     return '?';
@@ -508,7 +517,6 @@ const getBio = (p, notes) => {
         bio += personNote.data;
       }
     });
-    console.log(bio);
     return bio;
   }
 }
