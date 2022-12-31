@@ -557,7 +557,7 @@ const familyLinks = (family, peopleNodes) => {
 
   // Filter only individual objects from family tree
   let memberSet = family.tree.filter(function(member) {
-    return member.data && (member.data[1] === 'I' || member.data[1] === 'P');
+    return member.tag && (member.tag === 'HUSB' || member.tag === 'WIFE' || member.tag === 'CHIL');
   })
 
   // Filter marital status events
