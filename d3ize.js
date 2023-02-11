@@ -426,7 +426,7 @@ const getFamilies = p => {
 // Get color
 
 //from https://colordesigner.io/gradient-generator
-const getColor = (p, surnameList) => {
+/*const getColor = (p, surnameList) => {
   const colorList = [
     '#61eafa',
     '#55eaf7',
@@ -458,11 +458,11 @@ const getColor = (p, surnameList) => {
     '#44cc33',
     '#4eca23',
     '#56c809'
-  ];
+  ];*/
 
 
 // oG Color palette
-/*
+
 const getColor = (p, surnameList) => {
   const colorList = [
     '#ff7f50', // coral
@@ -497,7 +497,7 @@ const getColor = (p, surnameList) => {
     '#e0e0e0', // light grey
   ];
 
-*/
+
   // If color description listed in GEDCOM
   const dscr = (p.tree.filter(hasTag('DSCR')) || [])[0];
 
