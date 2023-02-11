@@ -428,35 +428,35 @@ const getFamilies = p => {
 //from https://colordesigner.io/gradient-generator
 const getColor = (p, surnameList) => {
   const colorList = [
-    '#61eafa'
-    '#55eaf7'
-    '#47e9f4'
-    '#37e9f0'
-    '#22e8ec'
-    '#00e8e8'
-    '#00e7e3'
-    '#00e7de'
-    '#00e6d9'
-    '#00e5d3'
-    '#00e5cd'
-    '#00e4c7'
-    '#00e3c0'
-    '#00e2b9'
-    '#00e1b1'
-    '#00dfa9'
-    '#00dea1'
-    '#00dd99'
-    '#00dc91'
-    '#00da88'
-    '#00d97f'
-    '#00d775'
-    '#00d56c'
-    '#01d462'
-    '#1fd257'
-    '#2ed04c'
-    '#3ace40'
-    '#44cc33'
-    '#4eca23'
+    '#61eafa',
+    '#55eaf7',
+    '#47e9f4',
+    '#37e9f0',
+    '#22e8ec',
+    '#00e8e8',
+    '#00e7e3',
+    '#00e7de',
+    '#00e6d9',
+    '#00e5d3',
+    '#00e5cd',
+    '#00e4c7',
+    '#00e3c0',
+    '#00e2b9',
+    '#00e1b1',
+    '#00dfa9',
+    '#00dea1',
+    '#00dd99',
+    '#00dc91',
+    '#00da88',
+    '#00d97f',
+    '#00d775',
+    '#00d56c',
+    '#01d462',
+    '#1fd257',
+    '#2ed04c',
+    '#3ace40',
+    '#44cc33',
+    '#4eca23',
     '#56c809'
   ];
 
