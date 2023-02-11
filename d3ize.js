@@ -426,7 +426,7 @@ const getFamilies = p => {
 // Get color
 
 //from https://colordesigner.io/gradient-generator
-/*const getColor = (p, surnameList) => {
+const getColor = (p, surnameList) => {
   const colorList = [
     '#61eafa',
     '#55eaf7',
@@ -458,12 +458,12 @@ const getFamilies = p => {
     '#44cc33',
     '#4eca23',
     '#56c809'
-  ];*/
+  ];
 
 
 // oG Color palette
 
-const getColor = (p, surnameList) => {
+/*const getColor = (p, surnameList) => {
   const colorList = [
     '#ff7f50', // coral
     '#00b4ff', // sky blue
@@ -495,7 +495,7 @@ const getColor = (p, surnameList) => {
     '#75616b', // dry wine
     '#71cfde', // baby foam
     '#e0e0e0', // light grey
-  ];
+  ];*/
 
 
   // If color description listed in GEDCOM
