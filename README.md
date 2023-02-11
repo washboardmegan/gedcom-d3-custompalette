@@ -1,6 +1,6 @@
 # gedcom-d3
 
-A clone of https://github.com/mister-blanket/gedcom-d3, so I could control the color palette of a [Blood Lines](https://github.com/mister-blanket/blood-lines) fork in a shareable way.
+A clone of https://github.com/mister-blanket/gedcom-d3, so I can control A [Blood Lines](https://github.com/mister-blanket/blood-lines) fork's color palette in a shareable way.
 
 ## Usage
 
