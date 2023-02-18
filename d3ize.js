@@ -427,38 +427,11 @@ const getFamilies = p => {
 
 //from https://colordesigner.io/gradient-generator
 const getColor = (p, surnameList) => {
-  const colorList = [
-    '#61eafa',
-    '#55eaf7',
-    '#47e9f4',
-    '#37e9f0',
-    '#22e8ec',
-    '#00e8e8',
-    '#00e7e3',
-    '#00e7de',
-    '#00e6d9',
-    '#00e5d3',
-    '#00e5cd',
-    '#00e4c7',
-    '#00e3c0',
-    '#00e2b9',
-    '#00e1b1',
-    '#00dfa9',
-    '#00dea1',
-    '#00dd99',
-    '#00dc91',
-    '#00da88',
-    '#00d97f',
-    '#00d775',
-    '#00d56c',
-    '#01d462',
-    '#1fd257',
-    '#2ed04c',
-    '#3ace40',
-    '#44cc33',
-    '#4eca23',
-    '#56c809'
-  ];
+  const colorList = 
+
+  ['#ff3737', '#ff373a', '#ff373d', '#ff3741', '#ff3744', '#ff3747', '#ff374a', '#ff374d', '#ff3750', '#ff3754', '#ff3757', '#ff375a', '#ff375d', '#ff3760', '#ff3764', '#ff3767', '#ff376a', '#ff376d', '#ff3770', '#ff3773', '#ff3777', '#ff377a', '#ff377d', '#ff3780', '#ff3783', '#ff3787', '#ff378a', '#ff378d', '#ff3790', '#ff3793', '#ff3796', '#ff379a', '#ff379d', '#ff37a0', '#ff37a3', '#ff37a6', '#ff37aa', '#ff37ad', '#ff37b0', '#ff37b3', '#ff37b6', '#ff37b9', '#ff37bd', '#ff37c0', '#ff37c3', '#ff37c6', '#ff37c9', '#ff37cc', '#ff37d0', '#ff37d3', '#ff37d6', '#ff37d9', '#ff37dc', '#ff37e0', '#ff37e3', '#ff37e6', '#ff37e9', '#ff37ec', '#ff37ef', '#ff37f3', '#ff37f6', '#ff37f9', '#ff37fc', '#fd37fd', '#fa37fd', '#f737fd', '#f436fd', '#f136fd', '#ee36fd', '#eb36fd', '#e836fd', '#e536fd', '#e235fd', '#df35fd', '#dc35fd', '#d935fd', '#d635fd', '#d335fd', '#d034fc', '#cd34fc', '#ca34fc', '#c734fc', '#c434fc', '#c134fc', '#be34fc', '#bb33fc', '#b833fc', '#b533fc', '#b233fc', '#af33fc', '#ac33fc', '#a932fc', '#a632fc', '#a332fc', '#a032fc', '#9d32fc', '#9a32fc', '#9731fc', '#9431fc', '#9131fc', '#8e31fc', '#8b31fc', '#8831fc', '#8530fc', '#8230fc', '#7f30fc', '#7c30fc', '#7930fc', '#7630fc', '#732ffb', '#702ffb', '#6d2ffb', '#6a2ffb', '#672ffb', '#642ffb', '#612ffb', '#5e2efb', '#5b2efb', '#582efb', '#552efb', '#522efb', '#4f2efb', '#4c2dfb', '#492dfb', '#462dfb', '#452efb', '#4431fb', '#4434fb', '#4436fb', '#4339fb', '#433cfb', '#423efb', '#4241fb', '#4244fb', '#4146fb', '#4149fb', '#414bfb', '#404efb', '#4051fb', '#3f53fb', '#3f56fb', '#3f59fb', '#3e5bfb', '#3e5efb', '#3d61fb', '#3d63fb', '#3d66fb', '#3c69fb', '#3c6bfb', '#3c6efb', '#3b71fb', '#3b73fb', '#3a76fb', '#3a79fb', '#3a7bfb', '#397efb', '#3980fb', '#3883fb', '#3886fb', '#3888fb', '#378bfb', '#378efb', '#3790fb', '#3693fb', '#3696fb', '#3598fb', '#359bfb', '#359efb', '#34a0fb', '#34a3fb', '#33a6fb', '#33a8fb', '#33abfb', '#32aefb', '#32b0fb', '#32b3fb', '#31b6fb', '#31b8fb', '#30bbfb', '#30bdfb', '#30c0fb', '#2fc3fb', '#2fc5fb', '#2ec8fb', '#2ecbfb', '#2ecdfb', '#2dd0fb', '#2dd2fb', '#2dd3f9', '#2dd3f8', '#2dd4f7', '#2dd5f5', '#2dd5f4', '#2dd6f2', '#2dd7f1', '#2dd7f0', '#2dd8ee', '#2dd9ed', '#2dd9ec', '#2ddaea', '#2ddbe9', '#2ddbe8', '#2ddce6', '#2ddde5', '#2ddde3', '#2ddee2', '#2ddfe1', '#2ddfdf', '#2de0de', '#2de1dd', '#2de1db', '#2de2da', '#2de3d9', '#2de3d7', '#2de4d6', '#2de5d4', '#2de5d3', '#2de6d2', '#2de7d0', '#2de7cf', '#2de8ce', '#2de9cc', '#2de9cb', '#2deaca', '#2debc8', '#2debc7', '#2decc5', '#2dedc4', '#2dedc3', '#2deec1', '#2deec0', '#2defbf', '#2df0bd', '#2df0bc', '#2df1ba', '#2df2b9', '#2df2b8', '#2df3b6', '#2df4b5', '#2df4b4', '#2df5b2', '#2df6b1', '#2df6b0', '#2df7ae', '#2df8ad', '#2df8ab', '#2df9aa', '#2dfaa9', '#2dfaa7', '#2dfba6']
+  
+;
 
 
 // oG Color palette
