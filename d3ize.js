@@ -427,83 +427,13 @@ const getFamilies = p => {
 
 //from https://gka.github.io/palettes/#/150|s|51f0ed,32fa67,c9fc1e,fc1e1e|ffffe0,ff005e,93003a|1|1 
 const getColor = (p, surnameList) => {
-<<<<<<< Updated upstream
-  const colorList = [
-    '#61eafa',
-    '#55eaf7',
-    '#47e9f4',
-    '#37e9f0',
-    '#22e8ec',
-    '#00e8e8',
-    '#00e7e3',
-    '#00e7de',
-    '#00e6d9',
-    '#00e5d3',
-    '#00e5cd',
-    '#00e4c7',
-    '#00e3c0',
-    '#00e2b9',
-    '#00e1b1',
-    '#00dfa9',
-    '#00dea1',
-    '#00dd99',
-    '#00dc91',
-    '#00da88',
-    '#00d97f',
-    '#00d775',
-    '#00d56c',
-    '#01d462',
-    '#1fd257',
-    '#2ed04c',
-    '#3ace40',
-    '#44cc33',
-    '#4eca23',
-    '#56c809'
-  ];
-=======
+  
   const colorList = 
 
 ['#51f0ed', '#8bf17f', '#90f07a', '#94ef75', '#97ee72', '#9aed6e', '#9dec6b', '#a0eb69', '#a2ea66', '#a4e964', '#a6e862', '#a8e760', '#abe65e', '#ace55c', '#aee45a', '#b0e459', '#b1e357', '#b3e256', '#b4e154', '#b6e053', '#b7df52', '#b9de50', '#badd4f', '#bbdd4e', '#bddc4d', '#bedb4c', '#bfda4b', '#c0d94a', '#c1d849', '#c2d748', '#c3d647', '#c4d646', '#c5d545', '#c6d444', '#c7d343', '#c8d242', '#c9d142', '#cad041', '#cbd040', '#cccf3f', '#cdce3f', '#cecd3e', '#cecc3d', '#cfcb3c', '#d0ca3c', '#d1ca3b', '#d1c93a', '#d2c83a', '#d3c739', '#d4c639', '#d4c538', '#d5c437', '#d6c437', '#d6c336', '#d7c236', '#d8c135', '#d8c035', '#d9bf34', '#dabf34', '#dabe33', '#dbbd33', '#dbbc32', '#dcbb32', '#ddba31', '#ddb931', '#deb930', '#deb830', '#dfb730', '#dfb62f', '#e0b52f', '#e0b42e', '#e1b32e', '#e1b32e', '#e2b22d', '#e2b12d', '#e3b02c', '#e3af2c', '#e4ae2c', '#e4ad2b', '#e5ac2b', '#e5ac2b', '#e5ab2a', '#e6aa2a', '#e6a92a', '#e7a829', '#e7a729', '#e7a629', '#e8a629', '#e8a528', '#e9a428', '#e9a328', '#e9a227', '#eaa127', '#eaa027', '#ea9f27', '#eb9f26', '#eb9e26', '#eb9d26', '#ec9c26', '#ec9b26', '#ec9a25', '#ed9925', '#ed9825', '#ed9725', '#ee9724', '#ee9624', '#ee9524', '#ef9424', '#ef9324', '#ef9224', '#ef9123', '#f09023', '#f08f23', '#f08e23', '#f18d23', '#f18d23', '#f18c22', '#f18b22', '#f28a22', '#f28922', '#f28822', '#f28722', '#f38622', '#f38521', '#f38421', '#f38321', '#f38221', '#f48121', '#f48021', '#f47f21', '#f47e21', '#f57d20', '#f57c20', '#f57c20', '#f57a20', '#f57920', '#f57820', '#f67820', '#f67620', '#f67520', '#f67520', '#f67320', '#f77220', '#f7711f', '#f7701f', '#f76f1f', '#f76e1f', '#f76d1f', '#f86c1f', '#f86b1f', '#f86a1f', '#f8691f', '#f8681f', '#f8671f', '#f8661f', '#f8651f', '#f9631f', '#f9621f', '#f9611f', '#f9601f', '#f95f1f', '#f95e1e', '#f95c1e', '#f95b1e', '#fa5a1e', '#fa591e', '#fa581e', '#fa571e', '#fa551e', '#fa541e', '#fa531e', '#fa511e', '#fa501e', '#fa4f1e', '#fb4d1e', '#fb4c1e', '#fb4b1e', '#fb491e', '#fb481e', '#fb461e', '#fb451e', '#fb431e', '#fb421e', '#fb401e', '#fb3e1e', '#fb3d1e', '#fb3b1e', '#fb391e', '#fc381e', '#fc361e', '#fc341e', '#fc321e', '#fc301e', '#fc2e1e', '#fc2b1e', '#fc291e', '#fc271e', '#fc241e', '#fc211e', '#fc1e1e']
   
 ;
->>>>>>> Stashed changes
 
-
-// oG Color palette
-
-/*const getColor = (p, surnameList) => {
-  const colorList = [
-    '#ff7f50', // coral
-    '#00b4ff', // sky blue
-    '#fac641', // mexican egg yolk
-    '#8a9b0f', // olive
-    '#a7dbd8', // sea foam
-    '#a37e58', // light brown
-    '#ec4913', // burnt orange
-    '#a27dbd', // soft royal purple
-    '#11644d', // forest
-    '#b3347c', // magenta
-    '#359668', // grass & sage
-    '#fab8b4', // soft pink
-    '#6de627', // neon green
-    '#ecd078', // tangerine
-    '#bfcff7', // ligt purple blue
-    '#e08e79', // blush
-    '#c44d58', // rouge
-    '#c4ffeb', // light sea foam
-    '#a6b890', // olive sage
-    '#aaaaaa', // light blue grey
-    '#ffd3b5', // peach
-    '#826942', // chocolate
-    '#d4ee5e', // lime
-    '#ecfc85', // light yellow
-    '#666666', // off white
-    '#ffa1c3', // newborn pink
-    '#6541a3', // royal purple
-    '#75616b', // dry wine
-    '#71cfde', // baby foam
-    '#e0e0e0', // light grey
-  ];*/
 
 
   // If color description listed in GEDCOM
